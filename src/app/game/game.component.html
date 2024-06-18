@@ -1,0 +1,24 @@
+<div class="game">
+  <h1 class="title">{{ 'WHO_WILL_WIN' | translate }}</h1>
+  <div class="score">{{ 'SCORE' | translate }}: {{ scoreService.score }}</div>
+  <div class="battle">
+    <div class="versus">
+      <img class="versus-image" src="assets/images/versus.png" alt="versus" />
+    </div>
+    <ng-container *ngFor="let team of teams; let i = index">
+      <ng-container *ngTemplateOutlet="teamTemplate; context: { team: team, side: i }"></ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #teamTemplate let-team="team" let-side="side">
+  <div class="team">
+    <button class="team-button" (click)="choose(side)">
+      <img class="team-image" [src]="imagePath + team.entity.image" [alt]="team.entity.name" />
+    </button>
+    <p class="team-title">
+      {{ team.number }}
+      {{ team.number > 1 ? team.entity.name.plural : team.entity.name.singular }}
+    </p>
+  </div>
+</ng-template>
