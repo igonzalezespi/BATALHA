@@ -1,4 +1,8 @@
-<div class="game">
+<div *ngIf="(loaded | async) !== 2">
+  <p>Loading...</p>
+</div>
+
+<div class="game" *ngIf="(loaded | async) === 2">
   <h1 class="title">{{ 'WHO_WILL_WIN' | translate }}</h1>
   <div class="score">{{ 'SCORE' | translate }}: {{ scoreService.score }}</div>
   <div class="battle">
@@ -14,7 +18,12 @@
 <ng-template #teamTemplate let-team="team" let-side="side">
   <div class="team">
     <button class="team-button" (click)="choose(side)">
-      <img class="team-image" [src]="imagePath + team.entity.image" [alt]="team.entity.name" />
+      <ng-container *ngIf="side === 0">
+        <img class="team-image" [src]="image1 | async" [alt]="team.entity.name.singular" />
+      </ng-container>
+      <ng-container *ngIf="side === 1">
+        <img class="team-image" [src]="image2 | async" [alt]="team.entity.name.singular" />
+      </ng-container>
     </button>
     <p class="team-title">
       {{ team.number }}
